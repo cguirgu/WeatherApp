@@ -14,15 +14,15 @@ const forecast = (latitude, longitude, callback) => {
 		longitude +
 		"&units=f"
 
-	request({ url: weatherstackURL, json: true }, (error, response) => {
+	request({ url: weatherstackURL, json: true }, (error, { body }) => {
 		if (error) {
 			callback("Could not access weather data!")
-		} else if (response.body.error) {
+		} else if (body.error) {
 			callback("Could not find that location.")
 		} else {
-			const temp = response.body.current.temperature
-			const feelsLike = response.body.current.feelslike
-			const descr = response.body.current.weather_descriptions[0]
+			const temp = body.current.temperature
+			const feelsLike = body.current.feelslike
+			const descr = body.current.weather_descriptions[0]
 			callback(
 				undefined,
 				descr + "\nTemperature: " + temp + "\nFeels like: " + feelsLike

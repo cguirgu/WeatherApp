@@ -10,20 +10,20 @@ const geocode = (address, callback) => {
 		"https://api.mapbox.com/geocoding/v5/mapbox.places/" +
 		encodeURIComponent(address) +
 		".json?access_token=pk.eyJ1IjoiY2hyaXN0aW5hZ3Vpcmd1aXMxIiwiYSI6ImNrcW15M2J6czBrd3Myb3Rpbmg1cnF0MjkifQ.1HyhFxFVYsyF-ZTYwCXI6A&limit=1"
-	request({ url: mapboxURL, json: true }, (error, response) => {
+	request({ url: mapboxURL, json: true }, (error, { body }) => {
 		// low-level error (ex: network error)
 		if (error) {
 			//provides error message as first parameter and implicitly provides 'undefined' as second parameter
 			callback("Unable to connect to location services.")
 		}
 		// if the features array is empty, then it could not locate any services
-		else if (response.body.features.length === 0) {
+		else if (body.features.length === 0) {
 			callback("Unable to find location. Try another search")
 		} else {
 			callback(undefined, {
-				latitude: response.body.features[0].center[1],
-				longitude: response.body.features[0].center[0],
-				location: response.body.features[0].place_name,
+				latitude: body.features[0].center[1],
+				longitude: body.features[0].center[0],
+				location: body.features[0].place_name,
 			})
 		}
 	})
